@@ -27,8 +27,7 @@ public class SwaggerConfig {
 
     }
 
-    private ApiInfo apiInfo()
-    {
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("小行云 基于Spring Boot+Swagger构建Restful接口")
                 .description("通用接口")

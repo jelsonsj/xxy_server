@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Controller
@@ -106,5 +107,10 @@ public class BaseController {
         return result;
     }
 
+
+    public String CreateToken()
+    {
+        return UUID.randomUUID().toString().replace("-","");
+    }
 
 }

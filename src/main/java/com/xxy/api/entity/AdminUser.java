@@ -54,4 +54,7 @@ public class AdminUser implements Serializable {
 
     @ApiModelProperty(value="更新时间")
     private String updated_at;
+
+    @ApiModelProperty(value="token")
+    private String token;
 }
