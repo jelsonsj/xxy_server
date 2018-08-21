@@ -5,4 +5,67 @@
     <select id="login" parameterType="adminUser" resultType="adminUser">
         select s.* from admin_user s where s.username=#{username} and s.password=md5(concat(salt,"_",md5(#{password})))
     </select>
+
+
+    <select id="findAdminUserList" parameterType="queryDto" resultType="adminUser">
+        select s.* from admin_user s where 1=1
+        order by s.user_id desc
+    </select>
+
+    <select id="findAdminUserById" parameterType="long" resultType="adminUser">
+        select s.* from admin_user s where s.user_id=#{id}
+    </select>
+
+
+    <insert id="addAdminUser" parameterType="adminUser" useGeneratedKeys="true" keyProperty="user_id">
+        insert into admin_user(username,password,salt,realname,avatar,phone,email,sex,locked,is_super,created_at,updated_at)
+        values(#{username},#{password},#{salt},#{realname},#{avatar},#{phone},#{email},#{sex},#{locked},#{is_super},now(),now())
+    </insert>
+
+    <update id="updateAdminUser" parameterType="adminUser">
+        update admin_user
+        <set>
+            <if test="username != null and username != ''">
+                username=#{username},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null and realname != ''">
+                realname=#{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null and avatar!=''">
+                avatar=#{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone!=''">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email!=''">
+                email=#{email,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null and sex!=''">
+                sex=#{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="locked != null and locked!=''">
+                locked=#{locked,jdbcType=VARCHAR},
+            </if>
+            <if test="is_super != null and is_super!=''">
+                is_super=#{is_super,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone!=''">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            updated_at=now(),
+        </set>
+        where user_id=#{user_id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteAdminUser" parameterType="int[]">
+        delete from admin_user where is_super=1 and  user_id in
+        <foreach collection="array" item="iditem" index="no" open="("
+                 separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+
 </mapper>

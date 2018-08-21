@@ -1,6 +1,8 @@
 package com.xxy.api.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.xxy.api.entity.AdminUser;
+import com.xxy.api.entity.QueryDto;
 import com.xxy.api.mapper.AdminUserMapper;
 import com.xxy.api.service.IAdminService;
 import org.slf4j.Logger;
@@ -26,33 +28,35 @@ public class AdminServiceImpl implements IAdminService {
         return adminUserMapper.login(adminUser);
     }
 
-//    @Override
-//    public AdminUser findAdminUserById(Long id) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<AdminUser> findAdminUserList() {
-//        return null;
-//    }
-//
-//    @Override
-//    public void addAdminUser(AdminUser adminUser) {
-//
-//    }
-//
-//    @Override
-//    public void updateAdminUser(AdminUser adminUser) {
-//
-//    }
-//
-//    @Override
-//    public void deleteAdminUser(int[] ids) {
-//
-//    }
-//
-//    @Override
-//    public void assignRoles(int admin_user_id, int[] role_ids) {
-//
-//    }
+    @Override
+    public AdminUser findAdminUserById(Long id) {
+        return adminUserMapper.findAdminUserById(id);
+    }
+
+    @Override
+    public List<AdminUser> findAdminUserList(QueryDto dto) {
+        PageHelper.startPage(dto.getPage().getCurrentPage(),dto.getPage().getPageSize());
+        return adminUserMapper.findAdminUserList(dto);
+    }
+
+    @Override
+    public Boolean addAdminUser(AdminUser adminUser) {
+        Long ret=adminUserMapper.addAdminUser(adminUser);
+        return  ret>0?true:false;
+    }
+
+    @Override
+    public Boolean updateAdminUser(AdminUser adminUser) {
+
+        AdminUser old=adminUserMapper.findAdminUserById(adminUser.getUser_id());
+        Long ret=adminUserMapper.updateAdminUser(adminUser);
+        return ret>0?true:false;
+    }
+
+    @Override
+    public Boolean deleteAdminUser(int[] ids) {
+        Long ret=adminUserMapper.deleteAdminUser(ids);
+        return ret>0?true:false;
+    }
+
 }
